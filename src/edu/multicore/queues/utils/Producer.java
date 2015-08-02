@@ -9,20 +9,55 @@ public class Producer extends Worker{
 
     MyQueue q;
     int ctr = 0;
-    int numMessages;
-    public Producer(MyQueue q, int numMessages){
+    final int numIterations;
+    private long startTime;
+    private long endTime;
+    private long elapsedTime;
+    private int id;
+
+
+    public Producer(int numIterations, MyQueue q, int id){
         this.q = q;
-        this.numMessages = numMessages;
+        this.numIterations = numIterations;
+        this.id = id;
+
+        startTime = 0;
+        endTime = 0;
+        elapsedTime = 0;
+
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public long getElapsedTime() {
+        return elapsedTime;
     }
 
     @Override
     public void run() {
-        while(numMessages > 0) {
+        int i = 0;
+
+        startTime = System.nanoTime();
+        while(i < numIterations ) {
             Message p = produce();
-            q.enq(p);
-            System.out.println("enq: " + p.toString());
-            --numMessages;
+            try {
+                q.enq(p.getId());
+                System.out.println("enq: " + p.toString());
+            }
+            catch (Exception e){
+                System.out.println("Producer exception: " + e);
+            }
+            i++;
         }
+        endTime = System.nanoTime();
+        elapsedTime = endTime - startTime;
+        System.out.println("producer" + id + " time took: " + elapsedTime);
     }
 
     private Message produce(){

@@ -8,25 +8,31 @@ import edu.multicore.queues.MyQueue;
 public class Consumer extends Worker {
 
     MyQueue q;
-    int numMessages;
-    public Consumer(MyQueue q, int numMessages){
+    final int numMessages;
+    int id;
+
+    public Consumer(int numMessages, MyQueue q, int id){
         this.q = q;
         this.numMessages = numMessages;
+        this.id = id;
     }
 
     @Override
     public void run() {
-        while(numMessages > 0){
-            Message m = (Message) q.deq();
-            consume(m);
-            System.out.println("deque: " + m.toString());
-            --numMessages;
+        int i = 0;
+        while(i < numMessages ){
+            try{
+//                Message m = (Message);
+                        Integer m = (Integer) q.deq();
+                System.out.println("Consumer" + id + " deque: " + m.toString());
+            }
+            catch (Exception e){
+                System.out.println("Consumer exception: " + e);
+            }
+            i++;
         }
+        System.out.println("Stopped consumer");
     }
 
-    private void consume(Message m){
 
-        m.getId();
-        m.getMessage();
-    }
 }
