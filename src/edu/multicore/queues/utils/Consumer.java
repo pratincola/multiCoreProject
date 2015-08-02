@@ -24,7 +24,7 @@ public class Consumer extends Worker {
             try{
 //                Message m = (Message);
                         Integer m = (Integer) q.deq();
-                System.out.println("Consumer" + id + " deque: " + m.toString());
+                System.out.println("Consumer " + id + " deque: " + m.toString());
             }
             catch (Exception e){
                 System.out.println("Consumer exception: " + e);

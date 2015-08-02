@@ -48,7 +48,7 @@ public class Producer extends Worker{
             Message p = produce();
             try {
                 q.enq(p.getId());
-                System.out.println("enq: " + p.toString());
+                System.out.println("Producer " + id + " enq: " + p.toString());
             }
             catch (Exception e){
                 System.out.println("Producer exception: " + e);
