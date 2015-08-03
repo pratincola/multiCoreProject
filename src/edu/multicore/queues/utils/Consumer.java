@@ -17,17 +17,30 @@ public class Consumer extends Worker {
         this.id = id;
     }
 
+    public void setQueue(MyQueue queue){
+        this.q = queue;
+    }
+
     @Override
     public void run() {
         int i = 0;
+        boolean log = Settings.getInstance().isLog();
+
         while(i < numMessages ){
             try{
 //                Message m = (Message);
-                        Integer m = (Integer) q.deq();
-                System.out.println("Consumer " + id + " deque: " + m.toString());
+                Integer m = (Integer) q.deq();
+                if(m == null){
+//                    Thread.yield();
+                }
+                else {
+                    if(log)
+                        System.out.println("Consumer " + id + " deque: " + m.toString());
+                }
             }
             catch (Exception e){
-                System.out.println("Consumer exception: " + e);
+                if(log)
+                    System.out.println("Consumer exception: " + e);
             }
             i++;
         }

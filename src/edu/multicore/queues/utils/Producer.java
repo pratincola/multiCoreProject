@@ -2,6 +2,8 @@ package edu.multicore.queues.utils;
 
 import edu.multicore.queues.MyQueue;
 
+import java.util.Queue;
+
 /**
  * Created by pratik1 on 7/27/15.
  */
@@ -39,19 +41,26 @@ public class Producer extends Worker{
         return elapsedTime;
     }
 
+    public void setQueue(MyQueue queue){
+        this.q = queue;
+    }
+
     @Override
     public void run() {
         int i = 0;
+        boolean log = Settings.getInstance().isLog();
 
         startTime = System.nanoTime();
         while(i < numIterations ) {
             Message p = produce();
             try {
                 q.enq(p.getId());
-                System.out.println("Producer " + id + " enq: " + p.toString());
+                if(log)
+                    System.out.println("Producer " + id + " enq: " + p.toString());
             }
             catch (Exception e){
-                System.out.println("Producer exception: " + e);
+                if(log)
+                    System.out.println("Producer exception: " + e);
             }
             i++;
         }

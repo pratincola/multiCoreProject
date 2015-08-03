@@ -34,6 +34,15 @@ public class Benchmark {
             consumers[i] = new Consumer( iterations ,queue, i);
         }
     }
+	
+	public Benchmark(Producer[] producers, Consumer[] consumers, MyQueue<Integer> queue, int iterations){
+        this.numProducers = producers.length;
+        this.numConsumers = consumers.length;
+        this.iterations = iterations;
+        this.queue = queue;
+        this.producers = producers;
+        this.consumers = consumers;
+    }
 
     public void runBenchmark(){
 
