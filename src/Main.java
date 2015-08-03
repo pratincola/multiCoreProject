@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         LockFreeQueue mq = new LockFreeQueue();
-        Benchmark b = new Benchmark(1, 1, 10000, mq);
+        Benchmark b = new Benchmark(1, 1, 1, mq);
         b.runBenchmark();
 //        System.out.println("Empty count: " + mq.getEmptyCounter());
         System.out.println("done");
