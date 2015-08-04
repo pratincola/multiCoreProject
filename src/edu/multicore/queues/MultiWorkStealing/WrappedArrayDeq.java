@@ -3,16 +3,18 @@ package edu.multicore.queues.MultiWorkStealing;
 import edu.multicore.queues.MyQueue;
 
 import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by jtharp on 8/3/2015.
  */
 public class WrappedArrayDeq<E> implements MyQueue<E>{
 
-    private final ArrayDeque<E> queue;
+    private final Queue<E> queue;
 
     public WrappedArrayDeq(int capacity){
-        this.queue = new ArrayDeque<E>(capacity);
+        this.queue = new ArrayBlockingQueue<E>(capacity);
     }
     @Override
     public boolean enq(E value) {

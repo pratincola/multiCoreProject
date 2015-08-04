@@ -12,6 +12,8 @@ import java.util.Iterator;
  * Created by jtharp on 8/3/2015.
  */
 public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>   {
+    private final Producer[] producers;
+    private final Consumer[] consumers;
     MyQueue[] queues;
     int currentRotation;
 
@@ -32,6 +34,9 @@ public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>
             producers[i].setQueue(this);
             consumers[i].setQueue(this);
         }
+
+        this.producers = producers;
+        this.consumers = consumers;
     }
 
     @Override
@@ -56,23 +61,46 @@ public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>
 
     @Override
     public boolean offer(E e) {
-        boolean offered = false;
-
-        currentRotation = (currentRotation + 1) % queues.length;
-
-        for(int i = 0; i < queues.length; i++){
-            if(queues[currentRotation].enq(e)){
-                offered = true;
-                break;
-            }
-            currentRotation = (currentRotation + 1)  % queues.length;
-        }
-        return offered;
+        int i = this.getQueueIndex();
+        return queues[i].enq(e);
     }
 
     @Override
     public E poll() {
-       
+
+        //This depends if we want to try to use a single threaded queue
+        //or non thread safe queue for each consumer.
+        //One reason to do that might be performance. The normal case is
+        //each consumer uses their own queue and the odd case is stealing from
+        //another queue. So only that case needs to be locked
+        //For now just use a thread safe queue
+
+        int i = this.getQueueIndex();
+
+        Object obj = queues[i].deq();
+        if(obj == null){
+            //work steal
+            for(int j = 0; j < queues.length; j++){
+                if(j == i)
+                    continue;
+                obj = queues[j].deq();
+                if(obj != null)
+                    return (E) obj;
+            }
+        }
+
+        return null;
+    }
+
+    private int getQueueIndex(){
+        //Hack to get the correct queue index.
+        //Relies on the fact Consumer Threads are created first
+        //in the benchmark code.
+        int id = (int)Thread.currentThread().getId();
+        if(id > this.consumers.length - 1){
+            id = id - this.consumers.length;
+        }
+        return id;
     }
 
     @Override

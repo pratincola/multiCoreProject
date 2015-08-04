@@ -48,20 +48,21 @@ public class Benchmark {
 
         long start = System.nanoTime();
 
-        Thread[] pthreads = new Thread[numProducers];
-        Thread[] cthreads = new Thread[numConsumers];
+        IdThread[] pthreads = new IdThread[numProducers];
+        IdThread[] cthreads = new IdThread[numConsumers];
 
-        for(int i = 0; i < numConsumers; i++){
-            cthreads[i] = new Thread(consumers[i]);
+        int i = 0;
+        for(i = 0; i < numConsumers; i++){
+            cthreads[i] = new IdThread(i, consumers[i]);
             cthreads[i].start();
         }
 
-        for(int i = 0; i < numProducers; i++){
-            pthreads[i] = new Thread(producers[i]);
-            pthreads[i].start();
+        for(int j = i; j < numProducers + i; j++){
+            pthreads[j-i] = new IdThread(j, producers[j-i]);
+            pthreads[j-i].start();
         }
 
-        for(int i = 0; i < numProducers; i++){
+        for(i = 0; i < numProducers; i++){
             try {
                 pthreads[i].join();
             } catch (InterruptedException e) {
@@ -69,7 +70,7 @@ public class Benchmark {
             }
         }
 
-        for(int i = 0; i < numConsumers; i++){
+        for(i = 0; i < numConsumers; i++){
             try {
                 cthreads[i].join();
             } catch (InterruptedException e) {
