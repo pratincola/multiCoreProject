@@ -18,3 +18,16 @@ out/production/code/hw4/q2/CoarseGrainedListSet.class
 out/production/code/hw4/q2/FineGrainedListSet$Node.class
 out/production/code/hw4/q2/FineGrainedListSet.class
 out/production/code/hw4/q2/ListSet.class
+out/production/code/edu/multicore/queues/MultiOneToOne/OneToOneBench.class
+out/production/code/edu/multicore/queues/MultiOneToOne/OneToOneQueue.class
+out/production/code/edu/multicore/queues/MultiWorkStealing/WorkStealingQueue.class
+out/production/code/edu/multicore/queues/MultiWorkStealing/WrappedArrayDeq.class
+out/production/code/edu/multicore/queues/singleProducerSingleConsumer/SingleQueue.class
+out/production/code/edu/multicore/queues/singleProducerSingleConsumer/TSingleQueueTest.class
+out/production/code/edu/multicore/queues/unbounded/UnboundedLockBased.class
+out/production/code/edu/multicore/queues/unbounded/UnboundedQueue.class
+out/production/code/edu/multicore/queues/utils/Consumer.class
+out/production/code/edu/multicore/queues/utils/EmptyException.class
+out/production/code/edu/multicore/queues/utils/Message.class
+out/production/code/edu/multicore/queues/utils/Producer.class
+out/production/code/edu/multicore/queues/utils/RoundRobin.class
