@@ -6,5 +6,6 @@ package edu.multicore.queues;
 public interface MyQueue<T> {
     public boolean enq(T value);
     public T deq();
+
 //    public T peek();
 }

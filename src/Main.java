@@ -3,18 +3,30 @@ import edu.multicore.queues.singleProducerSingleConsumer.SingleQueue;
 import edu.multicore.queues.unbounded.UnboundedQueue;
 import edu.multicore.queues.utils.*;
 import hw4.q1.LockFreeQueue;
+import hw4.q1.LockFreeQueue2;
 import hw4.q1.LockQueue;
 
 public class Main {
 
     public static void main(String[] args) {
 
+        runRR();
+
+    }
+
+    public static void runRR(){
         LockFreeQueue mq = new LockFreeQueue();
-        Benchmark b = new Benchmark(1, 1, 1, mq);
+        RoundRobin r = new RoundRobin(1, mq.getClass());
+        Benchmark b = new Benchmark(3, 1, 1000, r);
+        b.runBenchmark();
+    }
+
+    public static void runLockFreeQueue(){
+        LockFreeQueue mq = new LockFreeQueue();
+        Benchmark b = new Benchmark(2, 2, 1000000, mq);
         b.runBenchmark();
 //        System.out.println("Empty count: " + mq.getEmptyCounter());
         System.out.println("done");
-
     }
 
     public static void runUnboundedQueue() {

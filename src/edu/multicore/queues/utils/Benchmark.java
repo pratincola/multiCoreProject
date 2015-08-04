@@ -2,6 +2,8 @@ package edu.multicore.queues.utils;
 
 import edu.multicore.queues.MyQueue;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Queue;
 
 /**
@@ -16,6 +18,8 @@ public class Benchmark {
 
     private Producer[] producers;
     private Consumer[] consumers;
+
+    private RoundRobin roundRobin;
 
     public Benchmark(int numProducers, int numConsumers, int iterations, MyQueue queue){
         this.numProducers = numProducers;
@@ -42,6 +46,26 @@ public class Benchmark {
         this.queue = queue;
         this.producers = producers;
         this.consumers = consumers;
+    }
+
+    public Benchmark(int numProducers, int numConsumers, int iterations, RoundRobin r){
+        this.numProducers = numProducers;
+        this.numConsumers = numConsumers;
+        this.iterations = iterations;
+        this.queue = r.getFirst();
+
+
+        producers = new Producer[numProducers];
+        consumers = new Consumer[numConsumers];
+
+        for(int i = 0; i < numProducers; i++){
+            producers[i] = new Producer(iterations / numProducers, r.getNext(), i);
+        }
+
+        for(int i = 0; i < numConsumers; i++){
+            consumers[i] = new Consumer( iterations, queue, i, r);
+        }
+
     }
 
     public void runBenchmark(){
