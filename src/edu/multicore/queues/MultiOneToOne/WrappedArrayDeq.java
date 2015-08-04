@@ -24,6 +24,12 @@ public class WrappedArrayDeq<E> implements MyQueue<E>{
         return queue.poll();
     }
 
+    @Override
+    public boolean isEmpty() throws NoSuchMethodException {
+        return this.queue.isEmpty();
+    }
+
+
     public int size(){
         return this.queue.size();
     }

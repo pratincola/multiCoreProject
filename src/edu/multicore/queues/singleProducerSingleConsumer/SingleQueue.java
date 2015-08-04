@@ -60,6 +60,11 @@ public class SingleQueue<T> implements MyQueue {
         head.getAndIncrement();
         return x;
     }
+
+    @Override
+    public boolean isEmpty() throws NoSuchMethodException {
+        return (tail.get() == head.get());
+    }
 }
 
 

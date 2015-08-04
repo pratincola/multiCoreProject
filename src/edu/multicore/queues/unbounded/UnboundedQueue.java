@@ -40,7 +40,6 @@ public class UnboundedQueue<T> implements MyQueue{
         return result;
     }
 
-
     public boolean enq(Object value) {
         if (value == null) throw new NullPointerException();
         enqLock.lock();
@@ -54,4 +53,8 @@ public class UnboundedQueue<T> implements MyQueue{
         return false;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
 }

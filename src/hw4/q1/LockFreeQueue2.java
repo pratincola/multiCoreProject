@@ -2,6 +2,7 @@ package hw4.q1;
 
 import edu.multicore.queues.MyQueue;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicStampedReference;
 
 public class LockFreeQueue2<T> implements MyQueue<T> {
@@ -89,6 +90,10 @@ public class LockFreeQueue2<T> implements MyQueue<T> {
         return return_val;
     }
 
+    @Override
+    public boolean isEmpty() throws NoSuchMethodException {
+        throw new NoSuchElementException("Not implemented");
+    }
 
 
     private static class Node <T> {

@@ -55,6 +55,11 @@ public class LockQueue<T> implements MyQueue<T> {
         return return_val;
     }
 
+    @Override
+    public boolean isEmpty() throws NoSuchMethodException {
+        return head.next == null;
+    }
+
     private static class Node<T>{
         final T value;
         volatile Node<T> next;

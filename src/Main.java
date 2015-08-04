@@ -10,14 +10,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        runRR();
+        runLockFreeQueue_RRmode();
 
     }
 
-    public static void runRR(){
+    public static void runLockFreeQueue_RRmode(){
         LockFreeQueue mq = new LockFreeQueue();
-        RoundRobin r = new RoundRobin(1, mq.getClass());
-        Benchmark b = new Benchmark(3, 1, 1000, r);
+        RoundRobin r = new RoundRobin(10, mq.getClass());
+        Benchmark b = new Benchmark(10, 1, 1000000, r);
         b.runBenchmark();
     }
 
@@ -31,7 +31,7 @@ public class Main {
 
     public static void runUnboundedQueue() {
         LockQueue mq = new LockQueue();
-        Benchmark b = new Benchmark(10, 10, 10000000, mq);
+        Benchmark b = new Benchmark(10, 10, 1000000, mq);
         b.runBenchmark();
         System.out.println("Empty count: " + mq.getEmptyCounter());
         System.out.println("done");

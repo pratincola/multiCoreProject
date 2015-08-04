@@ -7,5 +7,6 @@ public interface MyQueue<T> {
     public boolean enq(T value);
     public T deq();
 
-//    public T peek();
+    public boolean isEmpty() throws NoSuchMethodException;
+
 }

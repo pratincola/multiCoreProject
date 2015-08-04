@@ -29,31 +29,13 @@ public class Consumer extends Worker {
         this.q = queue;
     }
 
+
     @Override
     public void run() {
+        Settings s = Settings.getInstance();
 
-        if(true){
-            rrConsume();
-        }
-        else{
-            consume();
-        }
-
-    }
-
-    public void rrConsume(){
         int i = 0;
-        while(i < numMessages){
-            Integer m = (Integer)q.deq();
-            System.out.println("Consumer " + id + " deque: " + m);
-            q = rr.getNext();
-        }
-    }
-
-
-    public void consume(){
-        int i = 0;
-        boolean log = Settings.getInstance().isLog();
+        boolean log = s.isLog();
 
         while(i < numMessages ){
             try{
@@ -72,8 +54,12 @@ public class Consumer extends Worker {
                     System.out.println("Consumer exception: " + e);
             }
             i++;
+            if(s.isRr()){
+                q = rr.getNext();
+            }
         }
         System.out.println("Stopped consumer");
 
     }
+
 }

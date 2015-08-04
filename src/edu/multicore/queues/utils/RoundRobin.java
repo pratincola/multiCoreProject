@@ -16,10 +16,12 @@ public class RoundRobin<M> {
     private final ThreadLocal<MyQueue> threadQueue = new ThreadLocal<>();
     private int current = 0;
 
+
     public RoundRobin(int numQueues, Class c){
 
         this.numQueues = numQueues;
         this.queues = new ArrayList<>();
+        Settings.getInstance().setRr(true);
 
         for(int i = 0; i < numQueues; i++){
             try {

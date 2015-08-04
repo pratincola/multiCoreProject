@@ -2,6 +2,8 @@ package hw4.q1;
 
 
 import edu.multicore.queues.MyQueue;
+import edu.multicore.queues.utils.EmptyException;
+
 import java.util.concurrent.atomic.AtomicReference;
 
 public class LockFreeQueue<T> implements MyQueue<T> {
@@ -47,7 +49,12 @@ public class LockFreeQueue<T> implements MyQueue<T> {
             if(first == head.get()){
                 if(first == last){
                     if(next == null){
-                      return null;
+                        try {
+                            throw new EmptyException("Empty");
+                        } catch (EmptyException e) {
+//                            e.printStackTrace();
+                        }
+//                      return null;        // return null or throw EmptyException..
                     }
                     tail.compareAndSet(last, next);
                 }
@@ -60,6 +67,11 @@ public class LockFreeQueue<T> implements MyQueue<T> {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean isEmpty() throws NoSuchMethodException {
+        return (head.get().next.get() == null);
     }
 
     public class Node {

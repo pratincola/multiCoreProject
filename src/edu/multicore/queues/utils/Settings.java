@@ -8,6 +8,7 @@ public class Settings {
 
     private static Settings obj;
     private boolean log;
+    private boolean rr = false;
 
     public static  synchronized Settings getInstance(){
         if(obj == null){
@@ -16,6 +17,13 @@ public class Settings {
         return obj;
     }
 
+    public void setRr(boolean rr) {
+        this.rr = rr;
+    }
+
+    public boolean isRr() {
+        return rr;
+    }
 
     public boolean isLog() {
         return log;
