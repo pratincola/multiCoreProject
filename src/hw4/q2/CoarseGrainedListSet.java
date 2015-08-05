@@ -5,6 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class CoarseGrainedListSet<T> implements ListSet<T> {
     private Node head;
     private ReentrantLock lock = new ReentrantLock();
+
     public CoarseGrainedListSet(){
         head = new Node<>(Integer.MIN_VALUE);
         head.next= new Node<>(Integer.MAX_VALUE);
@@ -88,6 +89,11 @@ public class CoarseGrainedListSet<T> implements ListSet<T> {
         volatile Node<T> next;
         Node(T value){
             this.value= value;
+            this.key = value.hashCode();
+        }
+        Node(int k){
+            this.value = null;
+            this.key = k;
         }
     }
 }

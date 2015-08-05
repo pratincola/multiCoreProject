@@ -1,18 +1,46 @@
 import edu.multicore.queues.MyQueue;
+import edu.multicore.queues.jqueues.DualSynchQueue;
 import edu.multicore.queues.singleProducerSingleConsumer.SingleQueue;
 import edu.multicore.queues.unbounded.UnboundedQueue;
 import edu.multicore.queues.utils.*;
 import hw4.q1.LockFreeQueue;
-import hw4.q1.LockFreeQueue2;
 import hw4.q1.LockQueue;
+import hw4.q2.WrappedCoarseGrainedListSet;
 
 public class Main {
 
     public static void main(String[] args) {
-
-        runLockFreeQueue_RRmode();
+        Settings s = Settings.getInstance();
+        s.setLog(true);
+        runWrappedCoarseGrainedListSet();
 
     }
+
+    public static void runWrappedCoarseGrainedListSet(){
+        WrappedCoarseGrainedListSet mq = new WrappedCoarseGrainedListSet();
+//        RoundRobin r = new RoundRobin(10, mq.getClass());
+//        Benchmark b = new Benchmark(10,5, 100000, r);
+        Benchmark b = new Benchmark(10,5, 100000, mq);
+        b.runBenchmark();
+        try {
+            System.out.println(mq.isEmpty());
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+    public static void runDualSynchQueue(){
+        DualSynchQueue mq = new DualSynchQueue();
+        RoundRobin r = new RoundRobin(10, mq.getClass());
+        Benchmark b = new Benchmark(10,5, 100000, r);
+        b.runBenchmark();
+
+    }
+
+
 
     public static void runLockFreeQueue_RRmode(){
         LockFreeQueue mq = new LockFreeQueue();
