@@ -22,45 +22,66 @@ public class BenchRunner {
 
     public static void main(String args[]) throws Exception {
 
-        String multiFilename = "multi.csv";
+        String filename = "multi.csv";
 
         Settings.getInstance().setLog(false);
         Benchmark benchmark;
 
-        intFile(multiFilename);
+        intFile(filename);
 
         OneToOneBenchSetupMulti();
         benchmark = new Benchmark(producers, consumers, queue, iterations);
         benchmark.runBenchmark();
 
-        writeResults(benchmark, "OneToOne", multiFilename);
+        writeResults(benchmark, "OneToOne", filename);
 
         WorkStealingSetupMulti();
         benchmark = new Benchmark(producers, consumers, queue, iterations);
         benchmark.runBenchmark();
 
-        writeResults(benchmark,"WorkStealing", multiFilename);
+        writeResults(benchmark, "WorkStealing", filename);
 
 
         LockFree();
         benchmark = new Benchmark(2, 2, iterations, queue);
         benchmark.runBenchmark();
 
-        writeResults(benchmark,"LockFree", multiFilename);
+        writeResults(benchmark, "LockFree", filename);
 
         LockFreeMultiRR();
         benchmark = new Benchmark(5, 5, iterations, rr);
         benchmark.runBenchmark();
 
-        writeResults(benchmark,"LockFreeRoundRobin", multiFilename);
+        writeResults(benchmark, "LockFreeRoundRobin", filename);
 
         SingQueue();
         benchmark = new Benchmark(1, 1, iterations, queue);
         benchmark.runBenchmark();
 
-        writeResults(benchmark,"SingleQueue", multiFilename);
+        writeResults(benchmark, "SingleQueue", filename);
 
+/////////////////////////////////////////////////////////////////////////////
+        String filename = "SingleProducerMulticonsumer.csv";
 
+        intFile(filename);
+
+        WorkStealingSingleP_MultiC();
+        benchmark = new Benchmark(producers, consumers, queue, iterations);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "WorkStealing", filename);
+
+        LockFree();
+        benchmark = new Benchmark(1, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark,"LockFree", filename);
+
+        LockFreeMultiRR();
+        benchmark = new Benchmark(1, 5, iterations, rr);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "LockFreeRoundRobin", filename);
     }
 
     private static void intFile(String filename) throws IOException {
@@ -75,6 +96,7 @@ public class BenchRunner {
     private static void printHeader(String filename) throws IOException {
         PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)));
         writer.println("Queue,Time,Full,Empty");
+        writer.flush();
     }
 
     private static void writeResults(Benchmark benchmark, String name, String filename) throws IOException {
@@ -93,6 +115,20 @@ public class BenchRunner {
             consumers[i] = new Consumer(iterations / producers.length, null, i);
         }
         queue = new OneToOneQueue<Integer>(producers, consumers, 100, false);
+    }
+
+    private static void WorkStealingSingleP_MultiC() throws Exception {
+        producers = new Producer[1];
+        consumers = new Consumer[5];
+
+        for(int i = 0; i < producers.length; i++){
+            producers[i] = new Producer(iterations / producers.length, null, i);
+        }
+
+        for(int i = 0; i < consumers.length; i++){
+            consumers[i] = new Consumer(iterations / producers.length, null, i);
+        }
+        queue = new WorkStealingQueue<>(producers, consumers, 100, false);
     }
 
     private static void WorkStealingSetupMulti() throws  Exception {

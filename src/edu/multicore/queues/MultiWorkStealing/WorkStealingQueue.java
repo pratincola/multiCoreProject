@@ -20,13 +20,10 @@ public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>
     int currentRotation;
 
     public WorkStealingQueue(Producer[] producers, Consumer[] consumers, int size, boolean wrapped) throws Exception {
-        if(producers.length != consumers.length)
-            throw new Exception("Producers and Consumers must be the same length");
-
-        queues = new MyQueue[producers.length];
+        queues = new MyQueue[consumers.length];
         currentRotation = 0;
 
-        for(int i = 0; i < producers.length; i++){
+        for(int i = 0; i < consumers.length; i++){
 
             MyQueue<E> q;
             if(wrapped)
@@ -36,9 +33,15 @@ public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>
 
             queues[i] = q;
 
-            producers[i].setQueue(this);
             consumers[i].setQueue(this);
         }
+
+        for(int i = 0; i < producers.length; i++){
+
+            producers[i].setQueue(this);
+        }
+
+
 
         this.producers = producers;
         this.consumers = consumers;
