@@ -21,7 +21,7 @@ public class OneToOneBench {
             producers[i] = new Producer(iterations / producers.length, null, i);
             consumers[i] = new Consumer(iterations / producers.length, null, i);
         }
-        OneToOneQueue<Integer> queue = new OneToOneQueue<Integer>(producers, consumers, 100);
+        OneToOneQueue<Integer> queue = new OneToOneQueue<Integer>(producers, consumers, 100, false);
 
         Benchmark benchmark = new Benchmark(producers, consumers, queue, iterations);
         benchmark.runBenchmark();

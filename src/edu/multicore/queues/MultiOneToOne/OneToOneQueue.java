@@ -19,7 +19,7 @@ public class OneToOneQueue<E> extends AbstractQueue<E> implements MyQueue<E> {
     MyQueue[] queues;
     int currentRotation;
 
-    public OneToOneQueue(Producer[] producers, Consumer[] consumers, int size) throws Exception {
+    public OneToOneQueue(Producer[] producers, Consumer[] consumers, int size, boolean wrapped) throws Exception {
         if(producers.length != consumers.length)
             throw new Exception("Producers and Consumers must be the same length");
 
@@ -28,10 +28,12 @@ public class OneToOneQueue<E> extends AbstractQueue<E> implements MyQueue<E> {
 
         for(int i = 0; i < producers.length; i++){
 
-            //Not a thread safe queue
-            //Not needed for a one to one producer to consumer
-//            MyQueue<E> q = new WrappedArrayDeq<E>(size);
-            MyQueue<E> q = new LockFreeQueue<>();
+            MyQueue<E> q;
+            if(wrapped)
+                q = new WrappedArrayDeq<E>(size);
+            else
+                q = new LockFreeQueue<>();
+
             queues[i] = q;
 
             producers[i].setQueue(this);
