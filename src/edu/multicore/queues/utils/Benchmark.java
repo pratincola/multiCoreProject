@@ -24,7 +24,7 @@ public class Benchmark {
     private long totalTime;
     private long totalEmpty;
     private long totalFull;
-    final int benchIterations = 25;
+    final int benchIterations = 10;
 
     public Benchmark(int numProducers, int numConsumers, int iterations, MyQueue queue){
         this.numProducers = numProducers;
@@ -54,6 +54,7 @@ public class Benchmark {
     }
 
     public Benchmark(int numProducers, int numConsumers, int iterations, RoundRobin r){
+        Settings.getInstance().setRr(true);
         this.numProducers = numProducers;
         this.numConsumers = numConsumers;
         this.iterations = iterations;
@@ -138,6 +139,8 @@ public class Benchmark {
                 }
             }
         }
+
+        Settings.getInstance().setRr(false);
         //System.out.println("Time spent: " + time + " milliseconds");
 
         System.out.println("Time spent: " + getAverageTime() + " milliseconds");

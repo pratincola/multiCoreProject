@@ -58,8 +58,13 @@ public class Consumer extends Worker {
                 e.printStackTrace();
             }
             i++;
-            if(s.isRr()){
-                q = rr.getNext();
+            try {
+                if (s.isRr()) {
+                    q = rr.getNext();
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
             }
         }
 //        System.out.println("Stopped consumer");

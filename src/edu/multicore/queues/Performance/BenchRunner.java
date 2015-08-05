@@ -28,30 +28,31 @@ public class BenchRunner {
         Benchmark benchmark;
 
         intFile(multiFilename);
-//
-//        OneToOneBenchSetupMulti();
-//        benchmark = new Benchmark(producers, consumers, queue, iterations);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "OneToOne", multiFilename);
-//
-//        WorkStealingSetupMulti();
-//        benchmark = new Benchmark(producers, consumers, queue, iterations);
-//        benchmark.runBenchmark();
-//        writeResults(benchmark,"WorkStealing", multiFilename);
-//
-//
-//        LockFree();
-//        benchmark = new Benchmark(5, 5, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark,"LockFree", multiFilename);
-//
-//        LockFreeMultiRR();
-//        benchmark = new Benchmark(5, 5, iterations, rr);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark,"LockFreeRoundRobin", multiFilename);
+
+        OneToOneBenchSetupMulti();
+        benchmark = new Benchmark(producers, consumers, queue, iterations);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "OneToOne", multiFilename);
+
+        WorkStealingSetupMulti();
+        benchmark = new Benchmark(producers, consumers, queue, iterations);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark,"WorkStealing", multiFilename);
+
+
+        LockFree();
+        benchmark = new Benchmark(2, 2, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark,"LockFree", multiFilename);
+
+        LockFreeMultiRR();
+        benchmark = new Benchmark(5, 5, iterations, rr);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark,"LockFreeRoundRobin", multiFilename);
 
         SingQueue();
         benchmark = new Benchmark(1, 1, iterations, queue);
