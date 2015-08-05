@@ -3,6 +3,8 @@ package edu.multicore.queues.MultiWorkStealing;
 import edu.multicore.queues.MyQueue;
 import edu.multicore.queues.utils.Consumer;
 import edu.multicore.queues.utils.Producer;
+import hw4.q1.LockFreeQueue;
+import hw4.q2.WrappedCoarseGrainedListSet;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.AbstractQueue;
@@ -29,6 +31,8 @@ public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>
             //Not a thread safe queue
             //Not needed for a one to one producer to consumer
             MyQueue<E> q = new WrappedArrayDeq<E>(size);
+//            MyQueue<E> q = new LockFreeQueue<>();
+//            MyQueue<E> q = new WrappedCoarseGrainedListSet();
             queues[i] = q;
 
             producers[i].setQueue(this);
@@ -52,11 +56,26 @@ public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>
         //Get the size of each queue.
         //And unlock
 
-        int size = 0;
+//        int size = 0;
+//        for(int i = 0; i < queues.length; i++){
+//            size += ((WrappedArrayDeq)queues[i]).size();
+//        }
+//        return size;
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public boolean isEmpty(){
         for(int i = 0; i < queues.length; i++){
-            size += ((WrappedArrayDeq)queues[i]).size();
+            try {
+                if(!queues[i].isEmpty()){
+                    return false;
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
         }
-        return size;
+        return true;
     }
 
     @Override

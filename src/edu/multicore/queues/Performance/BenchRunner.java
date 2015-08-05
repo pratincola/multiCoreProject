@@ -25,11 +25,12 @@ public class BenchRunner {
         String multiFilename = "multi.csv";
 
         Settings.getInstance().setLog(false);
+        Benchmark benchmark;
 
         intFile(multiFilename);
 
         OneToOneBenchSetup();
-        Benchmark benchmark = new Benchmark(producers, consumers, queue, iterations);
+        benchmark = new Benchmark(producers, consumers, queue, iterations);
         benchmark.runBenchmark();
 
         writeResults(benchmark, "OneToOne", multiFilename);

@@ -74,7 +74,7 @@ public class Benchmark {
     }
 
     public void runBenchmark(){
-        Settings.getInstance().setLog(false);
+//        Settings.getInstance().setLog(false);
         for(int k = 0; k < benchIterations; k++) {
 
             long start = System.nanoTime();

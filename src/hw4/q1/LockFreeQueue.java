@@ -8,9 +8,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class LockFreeQueue<T> implements MyQueue<T> {
     private AtomicReference<LockFreeQueue.Node> head, tail;
-
+    private Node dummy;
     public LockFreeQueue(){
-        LockFreeQueue.Node dummy = new LockFreeQueue.Node(null);
+        dummy = new LockFreeQueue.Node(null);
         head = new AtomicReference<LockFreeQueue.Node>(dummy);
         tail = new AtomicReference<LockFreeQueue.Node>(dummy);
     }
@@ -45,21 +45,27 @@ public class LockFreeQueue<T> implements MyQueue<T> {
         while(true){
             Node first = head.get();
             Node last = tail.get();
-            Node next = first.next.get();
+            Node next = null;
+            if(first.next != null)
+                next = first.next.get();
             if(first == head.get()){
                 if(first == last){
                     if(next == null){
-                        try {
-                            throw new EmptyException("Empty");
-                        } catch (EmptyException e) {
-//                            e.printStackTrace();
-                        }
-//                      return null;        // return null or throw EmptyException..
+//                        try {
+//                            throw new EmptyException("Empty");
+//                        } catch (EmptyException e) {
+////                            e.printStackTrace();
+//                        }
+                      return null;        // return null or throw EmptyException..
                     }
                     tail.compareAndSet(last, next);
                 }
                 else{
-                    T value = next.value;
+                    T value = null;
+                    if(next != null)
+                        value = next.value;
+                    if(next == null)
+                        next = dummy;
                     if(head.compareAndSet(first, next)){
                         return value;
                     }

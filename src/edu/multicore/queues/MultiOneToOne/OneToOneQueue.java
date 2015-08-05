@@ -3,6 +3,7 @@ package edu.multicore.queues.MultiOneToOne;
 import edu.multicore.queues.MyQueue;
 import edu.multicore.queues.utils.Consumer;
 import edu.multicore.queues.utils.Producer;
+import hw4.q1.LockFreeQueue;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.AbstractQueue;
@@ -29,7 +30,8 @@ public class OneToOneQueue<E> extends AbstractQueue<E> implements MyQueue<E> {
 
             //Not a thread safe queue
             //Not needed for a one to one producer to consumer
-            MyQueue<E> q = new WrappedArrayDeq<E>(size);
+//            MyQueue<E> q = new WrappedArrayDeq<E>(size);
+            MyQueue<E> q = new LockFreeQueue<>();
             queues[i] = q;
 
             producers[i].setQueue(this);

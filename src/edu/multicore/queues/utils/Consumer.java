@@ -55,6 +55,7 @@ public class Consumer extends Worker {
             catch (Exception e){
                 if(log)
                     System.out.println("Consumer exception: " + e);
+                e.printStackTrace();
             }
             i++;
             if(s.isRr()){
