@@ -61,7 +61,7 @@ public class BenchRunner {
         writeResults(benchmark, "SingleQueue", filename);
 
 /////////////////////////////////////////////////////////////////////////////
-        String filename = "SingleProducerMulticonsumer.csv";
+        filename = "SingleProducerMulticonsumer.csv";
 
         intFile(filename);
 
