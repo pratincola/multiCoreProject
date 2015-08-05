@@ -31,3 +31,16 @@ out/production/code/edu/multicore/queues/utils/EmptyException.class
 out/production/code/edu/multicore/queues/utils/Message.class
 out/production/code/edu/multicore/queues/utils/Producer.class
 out/production/code/edu/multicore/queues/utils/RoundRobin.class
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries

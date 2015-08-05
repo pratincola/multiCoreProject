@@ -16,6 +16,7 @@ public class Producer extends Worker{
     private long endTime;
     private long elapsedTime;
     private int id;
+    private long totalFull;
 
 
     public Producer(int numIterations, MyQueue q, int id){
@@ -47,6 +48,7 @@ public class Producer extends Worker{
 
     @Override
     public void run() {
+        totalFull = 0;
         int i = 0;
         boolean log = Settings.getInstance().isLog();
 
@@ -54,7 +56,10 @@ public class Producer extends Worker{
         while(i < numIterations ) {
             Message p = produce();
             try {
-                q.enq(p.getId());
+                boolean enqueued = q.enq(p.getId());
+                if(!enqueued){
+                    totalFull++;
+                }
                 if(log)
                     System.out.println("Producer " + id + " enq: " + p.toString());
             }
@@ -66,11 +71,16 @@ public class Producer extends Worker{
         }
         endTime = System.nanoTime();
         elapsedTime = endTime - startTime;
-        System.out.println("producer" + id + " time took: " + elapsedTime);
+        if(log)
+            System.out.println("producer" + id + " time took: " + elapsedTime);
     }
 
     private Message produce(){
         Message m = new Message(++ctr, "Example message.");
         return m;
+    }
+
+    public long getNumFull() {
+        return totalFull;
     }
 }

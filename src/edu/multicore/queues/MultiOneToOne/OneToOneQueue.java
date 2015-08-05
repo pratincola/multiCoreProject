@@ -102,4 +102,17 @@ public class OneToOneQueue<E> extends AbstractQueue<E> implements MyQueue<E> {
         }
         return null;
     }
+
+    @Override
+    public boolean isEmpty(){
+        for(int i = 0; i < queues.length; i++){
+            try {
+                if(!queues[i].isEmpty())
+                    return false;
+            } catch (NoSuchMethodException e) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

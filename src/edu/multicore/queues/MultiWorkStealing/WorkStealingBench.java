@@ -21,7 +21,7 @@ public class WorkStealingBench {
             producers[i] = new Producer(iterations / producers.length, null, i);
             consumers[i] = new Consumer(iterations / producers.length, null, i);
         }
-        WorkStealingQueue<Integer> queue = new WorkStealingQueue<Integer>(producers, consumers, 100);
+        WorkStealingQueue<Integer> queue = new WorkStealingQueue<Integer>(producers, consumers, 1000);
 
         Benchmark benchmark = new Benchmark(producers, consumers, queue, iterations);
         benchmark.runBenchmark();

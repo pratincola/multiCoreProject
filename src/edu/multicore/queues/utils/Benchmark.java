@@ -21,6 +21,11 @@ public class Benchmark {
 
     private RoundRobin roundRobin;
 
+    private long totalTime;
+    private long totalEmpty;
+    private long totalFull;
+    final int benchIterations = 25;
+
     public Benchmark(int numProducers, int numConsumers, int iterations, MyQueue queue){
         this.numProducers = numProducers;
         this.numConsumers = numConsumers;
@@ -69,43 +74,87 @@ public class Benchmark {
     }
 
     public void runBenchmark(){
+        Settings.getInstance().setLog(false);
+        for(int k = 0; k < benchIterations; k++) {
 
-        long start = System.nanoTime();
+            long start = System.nanoTime();
 
-        IdThread[] pthreads = new IdThread[numProducers];
-        IdThread[] cthreads = new IdThread[numConsumers];
+            IdThread[] pthreads = new IdThread[numProducers];
+            IdThread[] cthreads = new IdThread[numConsumers];
 
-        int i = 0;
-        for(i = 0; i < numConsumers; i++){
-            cthreads[i] = new IdThread(i, consumers[i]);
-            cthreads[i].start();
-        }
+            int i = 0;
+            for (i = 0; i < numConsumers; i++) {
+                cthreads[i] = new IdThread(i, consumers[i]);
+                consumers[i].start();
+                cthreads[i].start();
+            }
 
-        for(int j = i; j < numProducers + i; j++){
-            pthreads[j-i] = new IdThread(j, producers[j-i]);
-            pthreads[j-i].start();
-        }
+            for (int j = i; j < numProducers + i; j++) {
+                pthreads[j - i] = new IdThread(j, producers[j - i]);
+                pthreads[j - i].start();
+            }
 
-        for(i = 0; i < numProducers; i++){
+            for (i = 0; i < numProducers; i++) {
+                try {
+                    pthreads[i].join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+//        for(i = 0; i < numConsumers; i++){
+//            try {
+//                cthreads[i].join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
             try {
-                pthreads[i].join();
-            } catch (InterruptedException e) {
+                while (!queue.isEmpty()) {
+                }
+            } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             }
-        }
 
-        for(i = 0; i < numConsumers; i++){
-            try {
-                cthreads[i].join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            long end = System.nanoTime();
+            double time = (double) (end - start) / (1000000.0);
+
+            totalTime += time;
+
+            for(i = 0; i < numConsumers; i++){
+                consumers[i].stop();
+                totalEmpty += consumers[i].getNumEmpty();
+            }
+
+            for (i = 0; i < numProducers; i++) {
+                totalFull += producers[i].getNumFull();
+            }
+
+            for(i = 0; i < numConsumers; i++){
+                try {
+                    cthreads[i].join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
+        //System.out.println("Time spent: " + time + " milliseconds");
 
-        long end = System.nanoTime();
-        double time = (double)(end - start)/ (1000000000.0) ;
+        System.out.println("Time spent: " + getAverageTime() + " milliseconds");
+        System.out.println("Number of times queue was full: " + getAverageFull());
+        System.out.println("Number of times queue was empty: " + getAverageEmpty());
+    }
 
-        System.out.println("Time spent: " + time + " secs");
+    public long getAverageTime(){
+        return totalTime / benchIterations;
+    }
+
+    public long getAverageFull(){
+        return totalFull / benchIterations;
+    }
+
+    public long getAverageEmpty(){
+        return totalEmpty / benchIterations;
     }
 }
 

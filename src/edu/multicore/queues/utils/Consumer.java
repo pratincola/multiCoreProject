@@ -11,6 +11,8 @@ public class Consumer extends Worker {
     final int numMessages;
     int id;
     RoundRobin rr;
+    private boolean stop;
+    private long numEmpty;
 
     public Consumer(int numMessages, MyQueue q, int id){
         this.q = q;
@@ -33,16 +35,17 @@ public class Consumer extends Worker {
     @Override
     public void run() {
         Settings s = Settings.getInstance();
-
+        numEmpty = 0;
         int i = 0;
         boolean log = s.isLog();
 
-        while(i < numMessages ){
+        while(!stop){
             try{
 //                Message m = (Message);
-                Integer m = (Integer) q.deq();
+                Object m = q.deq();
                 if(m == null){
 //                    Thread.yield();
+                    numEmpty++;
                 }
                 else {
                     if(log)
@@ -58,8 +61,19 @@ public class Consumer extends Worker {
                 q = rr.getNext();
             }
         }
-        System.out.println("Stopped consumer");
+//        System.out.println("Stopped consumer");
 
     }
 
+    public void stop() {
+        this.stop = true;
+    }
+
+    public long getNumEmpty(){
+        return numEmpty;
+    }
+
+    public void start() {
+        this.stop = false;
+    }
 }
