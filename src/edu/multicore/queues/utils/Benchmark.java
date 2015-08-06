@@ -149,7 +149,8 @@ public class Benchmark {
     }
 
     public long getAverageTime(){
-        return totalTime / benchIterations;
+       // return totalTime / (benchIterations * (2000 / 1000000));
+        return totalTime / (benchIterations);
     }
 
     public long getAverageFull(){

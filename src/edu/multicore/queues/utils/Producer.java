@@ -67,6 +67,11 @@ public class Producer extends Worker{
                 if(log)
                     System.out.println("Producer exception: " + e);
             }
+//            try {
+//                Thread.sleep(0, 1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             i++;
         }
         endTime = System.nanoTime();

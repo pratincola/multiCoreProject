@@ -57,6 +57,11 @@ public class Consumer extends Worker {
                     System.out.println("Consumer exception: " + e);
                 e.printStackTrace();
             }
+//            try {
+//                Thread.sleep(0, 1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             i++;
             try {
                 if (s.isRr()) {

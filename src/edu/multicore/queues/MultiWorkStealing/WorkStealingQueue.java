@@ -3,7 +3,9 @@ package edu.multicore.queues.MultiWorkStealing;
 import edu.multicore.queues.MyQueue;
 import edu.multicore.queues.utils.Consumer;
 import edu.multicore.queues.utils.Producer;
+import edu.multicore.queues.utils.QueueEnum;
 import hw4.q1.LockFreeQueue;
+import hw4.q1.LockQueue;
 import hw4.q2.WrappedCoarseGrainedListSet;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -19,17 +21,23 @@ public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>
     MyQueue[] queues;
     int currentRotation;
 
-    public WorkStealingQueue(Producer[] producers, Consumer[] consumers, int size, boolean wrapped) throws Exception {
+    public WorkStealingQueue(Producer[] producers, Consumer[] consumers, int size, QueueEnum qtype) throws Exception {
         queues = new MyQueue[consumers.length];
         currentRotation = 0;
 
         for(int i = 0; i < consumers.length; i++){
 
             MyQueue<E> q;
-            if(wrapped)
+            if(qtype == QueueEnum.WrappedArrayBlocking)
                 q = new WrappedArrayDeq<E>(size);
-            else
+            else if(qtype == QueueEnum.LockFree)
                 q = new LockFreeQueue<>();
+            else if(qtype == QueueEnum.Locked){
+                q = new LockQueue<>();
+            }
+            else{
+                throw new Exception("No valid queue specified");
+            }
 
             queues[i] = q;
 

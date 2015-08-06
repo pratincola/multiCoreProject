@@ -3,9 +3,11 @@ package edu.multicore.queues.Performance;
 import edu.multicore.queues.MultiOneToOne.OneToOneQueue;
 import edu.multicore.queues.MultiWorkStealing.WorkStealingQueue;
 import edu.multicore.queues.MyQueue;
+import edu.multicore.queues.multipleProducerMultipleConsumer.CQueue;
 import edu.multicore.queues.singleProducerSingleConsumer.SingleQueue;
 import edu.multicore.queues.utils.*;
 import hw4.q1.LockFreeQueue;
+import hw4.q1.LockQueue;
 
 import java.io.*;
 
@@ -20,9 +22,13 @@ public class BenchRunner {
     private static int iterations = 1000000;
     private static RoundRobin rr;
 
+    private static boolean writeToFile = true;
+
     public static void main(String args[]) throws Exception {
 
         String filename = "multi.csv";
+
+        writeToFile = false;
 
         Settings.getInstance().setLog(false);
         Benchmark benchmark;
@@ -54,6 +60,20 @@ public class BenchRunner {
 
         writeResults(benchmark, "LockFreeRoundRobin", filename);
 
+
+
+        LockedQueue();
+        benchmark = new Benchmark(5, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "LockedQueue", filename);
+
+        LockedWorkStealingQueue();
+        benchmark = new Benchmark(5, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "WorkStealingLocked", filename);
+
         SingQueue();
         benchmark = new Benchmark(1, 1, iterations, queue);
         benchmark.runBenchmark();
@@ -84,7 +104,17 @@ public class BenchRunner {
         writeResults(benchmark, "LockFreeRoundRobin", filename);
     }
 
+    private static void CQueueInit() {
+//        queue = new CQueue();
+    }
+
+    private static void LockedQueue() {
+        queue = new LockQueue<Integer>();
+    }
+
     private static void intFile(String filename) throws IOException {
+        if(!writeToFile)
+            return;
         File f = new File(filename);
         if(f.exists() && !f.isDirectory()){
             f.delete();
@@ -100,7 +130,8 @@ public class BenchRunner {
     }
 
     private static void writeResults(Benchmark benchmark, String name, String filename) throws IOException {
-
+        if(!writeToFile)
+            return;
         PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)));
         writer.format("%s,%d,%d,%d\n", name, benchmark.getAverageTime(), benchmark.getAverageFull(), benchmark.getAverageEmpty());
         writer.close();
@@ -128,7 +159,7 @@ public class BenchRunner {
         for(int i = 0; i < consumers.length; i++){
             consumers[i] = new Consumer(iterations / producers.length, null, i);
         }
-        queue = new WorkStealingQueue<>(producers, consumers, 100, false);
+        queue = new WorkStealingQueue<>(producers, consumers, 100, QueueEnum.LockFree);
     }
 
     private static void WorkStealingSetupMulti() throws  Exception {
@@ -139,7 +170,18 @@ public class BenchRunner {
             producers[i] = new Producer(iterations / producers.length, null, i);
             consumers[i] = new Consumer(iterations / producers.length, null, i);
         }
-        queue = new WorkStealingQueue<>(producers, consumers, 100, false);
+        queue = new WorkStealingQueue<>(producers, consumers, 100, QueueEnum.LockFree);
+    }
+
+    private static void LockedWorkStealingQueue() throws Exception {
+        producers = new Producer[5];
+        consumers = new Consumer[5];
+
+        for(int i = 0; i < producers.length; i++){
+            producers[i] = new Producer(iterations / producers.length, null, i);
+            consumers[i] = new Consumer(iterations / producers.length, null, i);
+        }
+        queue = new WorkStealingQueue<>(producers, consumers, 100, QueueEnum.Locked);
     }
 
     private static void LockFreeMultiRR(){

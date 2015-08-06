@@ -45,7 +45,7 @@ public class LockQueue<T> implements MyQueue<T> {
         try{
             if (head.next == null) {
                 emptyCounter++;
-                throw new EmptyStackException();
+                return null;
             }
             return_val = head.next.value;
             head = head.next;

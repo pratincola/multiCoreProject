@@ -49,12 +49,12 @@ public class SingleQueue<T> implements MyQueue {
     @Override
     public Object deq() {
         boolean empty = false;
-        while (tail.get() - head .get()== 0) {
-            empty = true;
-        }; // busywait
-        if (empty) {
+//        while (tail.get() - head .get()== 0) {
+//            empty = true;
+//        }; // busywait
+        if(tail.get() - head.get() == 0){
             emptyCounter++;
-            empty = false;
+            return null;
         }
         Object x = items[head.get() % items.length];
         head.getAndIncrement();

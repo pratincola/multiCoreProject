@@ -1,9 +1,6 @@
 package edu.multicore.queues.MultiWorkStealing;
 
-import edu.multicore.queues.utils.Benchmark;
-import edu.multicore.queues.utils.Consumer;
-import edu.multicore.queues.utils.Producer;
-import edu.multicore.queues.utils.Settings;
+import edu.multicore.queues.utils.*;
 
 /**
  * Created by jtharp on 8/3/2015.
@@ -21,7 +18,7 @@ public class WorkStealingBench {
             producers[i] = new Producer(iterations / producers.length, null, i);
             consumers[i] = new Consumer(iterations / producers.length, null, i);
         }
-        WorkStealingQueue<Integer> queue = new WorkStealingQueue<Integer>(producers, consumers, 1000, false);
+        WorkStealingQueue<Integer> queue = new WorkStealingQueue<Integer>(producers, consumers, 1000, QueueEnum.LockFree);
 
         Benchmark benchmark = new Benchmark(producers, consumers, queue, iterations);
         benchmark.runBenchmark();
