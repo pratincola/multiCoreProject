@@ -1,4 +1,8 @@
-OneToOne,1023,0,702746
-WorkStealing,925,0,707311
-LockFree,1743,0,154447
-LockFreeRoundRobin,967,0,263459
+Queue,Time,Full,Empty
+OneToOne,152,471,25608355
+WorkStealing,114,261430,868003
+LockFree,235,0,657324
+LockFreeRoundRobin,379,0,0
+LockedQueue,749,0,680768
+WorkStealingLocked,172,2746824,893220
+SingleQueue,112,521071,944196
