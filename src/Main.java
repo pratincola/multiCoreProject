@@ -1,4 +1,5 @@
 import edu.multicore.queues.MyQueue;
+import edu.multicore.queues.Performance.BenchRunner;
 import edu.multicore.queues.jqueues.DualSynchQueue;
 import edu.multicore.queues.jqueues.SimpleLinear;
 import edu.multicore.queues.jqueues.SimpleTree;
@@ -13,8 +14,16 @@ import hw4.q2.WrappedCoarseGrainedListSet;
 public class Main {
 
     public static void main(String[] args) {
-        Settings s = Settings.getInstance();
-        s.setLog(true);
+
+        BenchRunner b = new BenchRunner();
+        try {
+            b.main(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//
+//        Settings s = Settings.getInstance();
+//        s.setLog(true);
 //        runWrappedCoarseGrainedListSet();
 //        runLockedFreeRR();
 //        runSimpleTree();
