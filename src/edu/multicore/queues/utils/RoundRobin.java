@@ -4,6 +4,8 @@ import edu.multicore.queues.MyQueue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntUnaryOperator;
 
 
 /**
@@ -13,15 +15,17 @@ public class RoundRobin<M> {
 
     int numQueues;
     private final List<MyQueue> queues;
-    private final ThreadLocal<MyQueue> threadQueue = new ThreadLocal<>();
-    private int current = 0;
-
+    private AtomicInteger currentConsumer = new AtomicInteger(0);
+    private AtomicInteger currentProducer = new AtomicInteger(0);
+    private int currQueue = 0;
+    private boolean rrProducer;
+    private boolean rrConsumer;
 
     public RoundRobin(int numQueues, Class c){
 
         this.numQueues = numQueues;
         this.queues = new ArrayList<>();
-        Settings.getInstance().setRr(true);
+        Settings.getInstance().setConsumerRr(true);
 
         for(int i = 0; i < numQueues; i++){
             try {
@@ -34,22 +38,83 @@ public class RoundRobin<M> {
                 e.printStackTrace();
             }
         }
-        threadQueue.set(queues.get(current));
     }
+
+    public RoundRobin(int numQueues, Class c, boolean rrConsumer, boolean rrProducer){
+
+        this.numQueues = numQueues;
+        this.queues = new ArrayList<>();
+        this.rrConsumer = rrConsumer;
+        this.rrProducer = rrProducer;
+
+        Settings s = Settings.getInstance();
+        if(rrConsumer) s.setConsumerRr(true);
+        if(rrProducer) s.setRrProducer(true);
+
+        for(int i = 0; i < numQueues; i++){
+            try {
+                MyQueue m = (MyQueue) c.newInstance();
+                queues.add(m);
+
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
 
     public MyQueue getFirst(){
         return queues.get(0);
     }
 
-    public  MyQueue getCurr(){
-        return queues.get(current);
+    public  MyQueue getCurrConsumer(){
+        return queues.get(currentConsumer.get());
+    }
+    public  MyQueue getCurrProducer(){
+        return queues.get(currentProducer.get());
     }
 
-    public MyQueue getNext(){
+    public AtomicInteger getCurrentConsumerQueueId() {
+        return currentConsumer;
+    }
+    public AtomicInteger getCurrentProducerQueueId() {
+        return currentProducer;
+    }
 
-        current = (current + 1) % queues.size();
+    public MyQueue getQueue(int i){
+        currQueue = (i)%queues.size();
+        return queues.get(currQueue);
+    }
 
-        return queues.get(current);
+    public MyQueue getNextQueueConsumer(){
+
+        IntUnaryOperator i = (x) -> (x+1)%queues.size();
+        currentConsumer.getAndUpdate(i);
+
+        return queues.get(currentConsumer.get());
 
     }
+
+    public MyQueue getNextQueueProducer(){
+        IntUnaryOperator i = (x) -> (x+1)%queues.size();
+        currentProducer.getAndUpdate(i);
+
+        return queues.get(currentProducer.get());
+
+    }
+
+
+    public boolean isRrProducer() {
+        return rrProducer;
+    }
+
+
+    public boolean isRrConsumer() {
+        return rrConsumer;
+    }
+
+
 }

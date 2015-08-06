@@ -47,10 +47,11 @@ public class Consumer extends Worker {
 //                    Thread.yield();
                     numEmpty++;
                 }
-                else {
-                    if(log)
-                        System.out.println("Consumer " + id + " deque: " + m.toString());
+                if(log) System.out.println("Consumer " + id + " Queue: " + ((rr==null)? id:((!rr.isRrConsumer())?id:rr.getCurrentConsumerQueueId())) + " deque: " + ((m==null)? "null":m.toString()));
+                if (s.isConsumerRr()) {
+                    q = rr.getNextQueueConsumer();
                 }
+
             }
             catch (Exception e){
                 if(log)
@@ -63,16 +64,8 @@ public class Consumer extends Worker {
 //                e.printStackTrace();
 //            }
             i++;
-            try {
-                if (s.isRr()) {
-                    q = rr.getNext();
-                }
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
         }
-//        System.out.println("Stopped consumer");
+        if(log) System.out.println("Stopped consumer");
 
     }
 

@@ -12,13 +12,22 @@ public class Main {
     public static void main(String[] args) {
         Settings s = Settings.getInstance();
         s.setLog(true);
-        runWrappedCoarseGrainedListSet();
+//        runWrappedCoarseGrainedListSet();
+        runLockedFreeRR();
 
+
+    }
+
+    public static void runLockedFreeRR(){
+        LockFreeQueue mq = new LockFreeQueue();
+        RoundRobin r = new RoundRobin(5, mq.getClass(), true, false);
+        Benchmark b = new Benchmark(5, 5, 100, r);
+        b.runBenchmark();
     }
 
     public static void runWrappedCoarseGrainedListSet(){
         WrappedCoarseGrainedListSet mq = new WrappedCoarseGrainedListSet();
-//        RoundRobin r = new RoundRobin(10, mq.getClass());
+        RoundRobin r = new RoundRobin(10, mq.getClass(), true, false );
 //        Benchmark b = new Benchmark(10,5, 100000, r);
         Benchmark b = new Benchmark(10,5, 100000, mq);
         b.runBenchmark();
