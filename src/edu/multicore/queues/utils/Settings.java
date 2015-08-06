@@ -8,7 +8,8 @@ public class Settings {
 
     private static Settings obj;
     private boolean log;
-    private boolean rr = false;
+    private boolean rrConsumer = false;
+    private boolean rrProducer = false;
 
     public static  synchronized Settings getInstance(){
         if(obj == null){
@@ -17,12 +18,20 @@ public class Settings {
         return obj;
     }
 
-    public void setRr(boolean rr) {
-        this.rr = rr;
+    public void setConsumerRr(boolean rr) {
+        this.rrConsumer = rr;
     }
 
-    public boolean isRr() {
-        return rr;
+    public boolean isConsumerRr() {
+        return rrConsumer;
+    }
+
+    public boolean isRrProducer() {
+        return rrProducer;
+    }
+
+    public void setRrProducer(boolean rrProducer) {
+        this.rrProducer = rrProducer;
     }
 
     public boolean isLog() {

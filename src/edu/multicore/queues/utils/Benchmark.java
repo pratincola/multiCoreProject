@@ -2,10 +2,6 @@ package edu.multicore.queues.utils;
 
 import edu.multicore.queues.MyQueue;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Queue;
-
 /**
  * Created by jtharp on 7/29/2015.
  */
@@ -54,7 +50,6 @@ public class Benchmark {
     }
 
     public Benchmark(int numProducers, int numConsumers, int iterations, RoundRobin r){
-        Settings.getInstance().setRr(true);
         this.numProducers = numProducers;
         this.numConsumers = numConsumers;
         this.iterations = iterations;
@@ -63,13 +58,15 @@ public class Benchmark {
 
         producers = new Producer[numProducers];
         consumers = new Consumer[numConsumers];
+        MyQueue pq;
+        MyQueue cq;
 
         for(int i = 0; i < numProducers; i++){
-            producers[i] = new Producer(iterations / numProducers, r.getNext(), i);
+            producers[i] = new Producer(iterations / numProducers, r.getQueue(i), i, r);
         }
 
         for(int i = 0; i < numConsumers; i++){
-            consumers[i] = new Consumer( iterations, queue, i, r);
+            consumers[i] = new Consumer( iterations, r.getQueue(i), i, r);
         }
 
     }
@@ -140,7 +137,7 @@ public class Benchmark {
             }
         }
 
-        Settings.getInstance().setRr(false);
+        Settings.getInstance().setConsumerRr(false);
         //System.out.println("Time spent: " + time + " milliseconds");
 
         System.out.println("Time spent: " + getAverageTime() + " milliseconds");

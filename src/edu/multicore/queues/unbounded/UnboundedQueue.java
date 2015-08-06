@@ -4,6 +4,7 @@ package edu.multicore.queues.unbounded;
  * Created by pratik1 on 7/27/15.
  */
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.locks.ReentrantLock;
 
 import edu.multicore.queues.MyQueue;
@@ -55,6 +56,6 @@ public class UnboundedQueue<T> implements MyQueue{
 
     @Override
     public boolean isEmpty() {
-        return false;
+      return head.next == null;
     }
 }
