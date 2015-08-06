@@ -12,16 +12,11 @@ package edu.multicore.queues.jqueues;
 
 import edu.multicore.queues.utils.Bin;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Simple tree-based bounded priority queue
- * @param T item type
- * @author Maurice Herlihy
- */
-public class SimpleTree<T>  {
+public class SimpleTree<T> implements PQueue<T> {
     int range;
 
     List<TreeNode> leaves; // array of tree leaves
@@ -61,6 +56,7 @@ public class SimpleTree<T>  {
             }
             node = parent;
         }
+        System.out.println("item: " + item + " priority: " + priority);
     }
 
     public T removeMin() {
@@ -74,6 +70,14 @@ public class SimpleTree<T>  {
         }
         return node.bin.get(); // if null pqueue is empty
     }
+
+    public boolean isEmpty(){
+        return root.bin.isEmpty();
+
+//        return false;
+    }
+
+
     public class TreeNode {
         AtomicInteger counter;    // bounded counter
         TreeNode parent;    // reference to parent
@@ -84,4 +88,8 @@ public class SimpleTree<T>  {
             return right == null;
         }
     }
+
+
 }
+
+

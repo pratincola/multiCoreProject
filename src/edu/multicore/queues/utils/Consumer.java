@@ -45,7 +45,7 @@ public class Consumer extends Worker {
 //                Message m = (Message);
                 Object m = q.deq();
                 if(m == null){
-//                    Thread.yield();
+                    Thread.yield();
                     numEmpty++;
                 }
                 if(log) System.out.println("Consumer " + id + " Queue: " + ((rr==null)? id:((!rr.isRrConsumer())?id:rr.getCurrentConsumerQueueId())) + " deque: " + ((m==null)? "null":m.toString()));
