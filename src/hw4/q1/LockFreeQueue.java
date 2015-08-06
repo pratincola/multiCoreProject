@@ -1,4 +1,4 @@
-package hw4.q1;
+//package hw4.q1;
 
 
 import edu.multicore.queues.MyQueue;
@@ -42,9 +42,6 @@ public class LockFreeQueue<T> implements MyQueue<T> {
         while(true){
             if(capacity > 0 && count.get() >= capacity)
             {
-//                if(count.get() > capacity){
-//                    count.decrementAndGet();
-//                }
                 return false;
             }
 
