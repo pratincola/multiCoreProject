@@ -56,12 +56,17 @@ public class Producer extends Worker{
         while(i < numIterations ) {
             Message p = produce();
             try {
-                boolean enqueued = q.enq(p.getId());
+                boolean enqueued = q.enq(i);
                 if(!enqueued){
+                    --ctr;
                     totalFull++;
                 }
-                if(log)
-                    System.out.println("Producer " + id + " enq: " + p.toString());
+                else{
+                    if(log)
+                        System.out.println("Producer " + id + " enq: " + i);
+                    i++;
+                }
+
             }
             catch (Exception e){
                 if(log)
@@ -72,7 +77,7 @@ public class Producer extends Worker{
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
-            i++;
+
         }
         endTime = System.nanoTime();
         elapsedTime = endTime - startTime;

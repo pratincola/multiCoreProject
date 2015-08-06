@@ -31,9 +31,9 @@ public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>
             if(qtype == QueueEnum.WrappedArrayBlocking)
                 q = new WrappedArrayDeq<E>(size);
             else if(qtype == QueueEnum.LockFree)
-                q = new LockFreeQueue<>();
+                q = new LockFreeQueue<>(size);
             else if(qtype == QueueEnum.Locked){
-                q = new LockQueue<>();
+                q = new LockQueue<>(size);
             }
             else{
                 throw new Exception("No valid queue specified");
@@ -62,17 +62,7 @@ public class WorkStealingQueue<E> extends AbstractQueue<E> implements MyQueue<E>
 
     @Override
     public int size() {
-        //Might not be the exact size due to threading
-        //and multiple queues.
-        //Only way to get exact size is to introduce a lock on each queue
-        //Get the size of each queue.
-        //And unlock
 
-//        int size = 0;
-//        for(int i = 0; i < queues.length; i++){
-//            size += ((WrappedArrayDeq)queues[i]).size();
-//        }
-//        return size;
         throw new NotImplementedException();
     }
 

@@ -35,25 +35,30 @@ public class BenchRunner {
 
         intFile(filename);
 
+        System.out.println("Multi Multi");
+        System.out.println("OneToOne");
         OneToOneBenchSetupMulti();
         benchmark = new Benchmark(producers, consumers, queue, iterations);
         benchmark.runBenchmark();
 
         writeResults(benchmark, "OneToOne", filename);
 
+
+        System.out.println("Workstealing");
         WorkStealingSetupMulti();
         benchmark = new Benchmark(producers, consumers, queue, iterations);
         benchmark.runBenchmark();
 
         writeResults(benchmark, "WorkStealing", filename);
 
-
+        System.out.println("Lockfree");
         LockFree();
-        benchmark = new Benchmark(2, 2, iterations, queue);
+        benchmark = new Benchmark(5, 5, iterations, queue);
         benchmark.runBenchmark();
 
         writeResults(benchmark, "LockFree", filename);
 
+        System.out.println("Lockfree RR");
         LockFreeMultiRR();
         benchmark = new Benchmark(5, 5, iterations, rr);
         benchmark.runBenchmark();
@@ -61,47 +66,69 @@ public class BenchRunner {
         writeResults(benchmark, "LockFreeRoundRobin", filename);
 
 
-
+        System.out.println("Locked Queue");
         LockedQueue();
         benchmark = new Benchmark(5, 5, iterations, queue);
         benchmark.runBenchmark();
 
         writeResults(benchmark, "LockedQueue", filename);
 
+        System.out.println("LockedWorkStealing");
         LockedWorkStealingQueue();
         benchmark = new Benchmark(5, 5, iterations, queue);
         benchmark.runBenchmark();
 
         writeResults(benchmark, "WorkStealingLocked", filename);
 
+        System.out.println("Single Queue 1 - 1");
         SingQueue();
         benchmark = new Benchmark(1, 1, iterations, queue);
         benchmark.runBenchmark();
 
         writeResults(benchmark, "SingleQueue", filename);
 
+
 /////////////////////////////////////////////////////////////////////////////
         filename = "SingleProducerMulticonsumer.csv";
 
         intFile(filename);
 
+        System.out.println("Single Producer");
+
+        System.out.println("Workstealing");
         WorkStealingSingleP_MultiC();
         benchmark = new Benchmark(producers, consumers, queue, iterations);
         benchmark.runBenchmark();
 
         writeResults(benchmark, "WorkStealing", filename);
 
+        System.out.println("Lockfree");
         LockFree();
         benchmark = new Benchmark(1, 5, iterations, queue);
         benchmark.runBenchmark();
 
-        writeResults(benchmark,"LockFree", filename);
+        writeResults(benchmark, "LockFree", filename);
 
+        System.out.println("LockfreeRR");
         LockFreeMultiRR();
         benchmark = new Benchmark(1, 5, iterations, rr);
         benchmark.runBenchmark();
 
         writeResults(benchmark, "LockFreeRoundRobin", filename);
+
+        System.out.println("Locked Queue");
+        LockedQueue();
+        benchmark = new Benchmark(1, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "LockedQueue", filename);
+
+        System.out.println("LockedWorkStealing");
+        LockedWorkStealingSingleP_MultiC();
+        benchmark = new Benchmark(1, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "WorkStealingLocked", filename);
     }
 
     private static void CQueueInit() {
@@ -162,6 +189,20 @@ public class BenchRunner {
         queue = new WorkStealingQueue<>(producers, consumers, 100, QueueEnum.LockFree);
     }
 
+    private static void LockedWorkStealingSingleP_MultiC() throws Exception {
+        producers = new Producer[1];
+        consumers = new Consumer[5];
+
+        for(int i = 0; i < producers.length; i++){
+            producers[i] = new Producer(iterations / producers.length, null, i);
+        }
+
+        for(int i = 0; i < consumers.length; i++){
+            consumers[i] = new Consumer(iterations / producers.length, null, i);
+        }
+        queue = new WorkStealingQueue<>(producers, consumers, 100, QueueEnum.Locked);
+    }
+
     private static void WorkStealingSetupMulti() throws  Exception {
         producers = new Producer[5];
         consumers = new Consumer[5];
@@ -185,7 +226,7 @@ public class BenchRunner {
     }
 
     private static void LockFreeMultiRR(){
-        queue = new LockFreeQueue();
+        queue = new LockFreeQueue(100);
         rr = new RoundRobin(5, queue.getClass());
     }
 

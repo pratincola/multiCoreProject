@@ -31,6 +31,6 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{ id:" + id + ",message: " + message + "}";
+        return "Message{ id:" + id + "}";
     }
 }

@@ -32,7 +32,7 @@ public class OneToOneQueue<E> extends AbstractQueue<E> implements MyQueue<E> {
             if(wrapped)
                 q = new WrappedArrayDeq<E>(size);
             else
-                q = new LockFreeQueue<>();
+                q = new LockFreeQueue<>(size);
 
             queues[i] = q;
 

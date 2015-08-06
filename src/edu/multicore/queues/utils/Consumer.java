@@ -38,6 +38,7 @@ public class Consumer extends Worker {
         numEmpty = 0;
         int i = 0;
         boolean log = s.isLog();
+        stop = false;
 
         while(!stop){
             try{

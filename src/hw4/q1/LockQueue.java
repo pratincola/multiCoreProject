@@ -7,12 +7,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class LockQueue<T> implements MyQueue<T> {
-    AtomicInteger count = new AtomicInteger(0);
+
     ReentrantLock enq_lock, deq_lock;
     Node<T> head;
 
     Node<T> tail;
     int emptyCounter;
+    AtomicInteger count = new AtomicInteger(0);
+    private int capacity;
 
     public LockQueue() {
         head = new Node<>(null);
@@ -20,6 +22,11 @@ public class LockQueue<T> implements MyQueue<T> {
         enq_lock = new ReentrantLock();
         deq_lock = new ReentrantLock();
         emptyCounter = 0;
+        capacity = -1;
+    }
+    public LockQueue(int capacity) {
+        this();
+        this.capacity = capacity;
     }
 
     public int getEmptyCounter() {
@@ -28,11 +35,16 @@ public class LockQueue<T> implements MyQueue<T> {
 
     public boolean enq(T value) {
         if (value == null) throw new NullPointerException();
+        if(capacity > 0 && count.get() > capacity)
+            return false;
+
         enq_lock.lock();
         try{
             Node<T> new_element = new Node<>(value);
             tail.next = new_element;
             tail = new_element;
+            if(capacity > 0)
+                count.incrementAndGet();
         }finally {
             enq_lock.unlock();
         }
@@ -49,6 +61,14 @@ public class LockQueue<T> implements MyQueue<T> {
             }
             return_val = head.next.value;
             head = head.next;
+            if(return_val != null){
+                if(capacity > 0) {
+                    count.decrementAndGet();
+                    if (count.get() < 0) {
+                        count.set(0);
+                    }
+                }
+            }
         } finally {
             deq_lock.unlock();
         }

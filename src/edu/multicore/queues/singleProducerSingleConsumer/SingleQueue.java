@@ -33,13 +33,16 @@ public class SingleQueue<T> implements MyQueue {
 
     @Override
     public boolean enq(Object value) {
-        boolean full = false;
-        while (tail.get() - head.get() == items.length) {
-            full = true;
-        }; //busywait
-        if (full){
-            fullCounter++;
-            full = false;
+//        boolean full = false;
+//        while (tail.get() - head.get() == items.length) {
+//            full = true;
+//        }; //busywait
+//        if (full){
+//            fullCounter++;
+//            full = false;
+//        }
+        if((tail.get() - head.get() == items.length)){
+            return false;
         }
         items[tail.get() % items.length] = (T)value;
         tail.getAndIncrement();
