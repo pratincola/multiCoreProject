@@ -28,8 +28,7 @@ public class BenchRunner {
 
         String filename = "multi.csv";
 
-        writeToFile = false;
-
+//        writeToFile = true;
         Settings.getInstance().setLog(false);
         Benchmark benchmark;
 

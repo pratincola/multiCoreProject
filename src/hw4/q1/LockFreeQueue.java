@@ -1,4 +1,4 @@
-//package hw4.q1;
+package hw4.q1;
 
 
 import edu.multicore.queues.MyQueue;
@@ -38,31 +38,23 @@ public class LockFreeQueue<T> implements MyQueue<T> {
 
 
         Node node = new Node(value);
+        Node tail = this.tail.get();
 
         while(true){
-            if(capacity > 0 && count.get() >= capacity)
-            {
-                return false;
-            }
-
-            Node last = tail.get();
-            Node next = last.next.get();
-            if(last == tail.get()){
+            tail = this.tail.get();
+            Node next = tail.next.get();
+            if(this.tail.get() == tail){
                 if(next == null){
-                    if(last.next.compareAndSet(next, node)){
-                        tail.compareAndSet(last, node);
-
-                        if(capacity > 0)
-                            count.incrementAndGet();
-
-                        return true;
+                    if(tail.next.compareAndSet(next, node)){
+                        break;
                     }
                 }
                 else{
-                    tail.compareAndSet(last, next);
+                    this.tail.compareAndSet(tail, next);
                 }
             }
         }
+        return this.tail.compareAndSet(tail, node);
     }
 
     @Override

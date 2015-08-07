@@ -20,7 +20,7 @@ public class Benchmark {
     private long totalTime;
     private long totalEmpty;
     private long totalFull;
-    final int benchIterations = 10;
+    final int benchIterations = 5;
 
     public Benchmark(int numProducers, int numConsumers, int iterations, MyQueue queue){
         this.numProducers = numProducers;
