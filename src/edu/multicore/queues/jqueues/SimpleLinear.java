@@ -50,4 +50,9 @@ public class SimpleLinear<T> implements PQueue<T>{
         }
         return result;
     }
+
+    @Override
+    public int getRange() {
+        return range;
+    }
 }

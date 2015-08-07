@@ -11,11 +11,12 @@ public class WrapperSimpleTree<T> implements MyQueue<T> {
 
     PQueue pq;
     Random r;
-    int size;
+
     boolean useRandomPriority;
-    public WrapperSimpleTree(PQueue p, int logRange, boolean useRandomPriority){
-        size = logRange;
+    public WrapperSimpleTree(PQueue p, boolean useRandomPriority){
+
         this.pq = p;
+        this.useRandomPriority = useRandomPriority;
         if(useRandomPriority)
             r = new Random(4393);
     }
@@ -23,11 +24,12 @@ public class WrapperSimpleTree<T> implements MyQueue<T> {
     @Override
     public boolean enq(T value) {
         int priority = 1;
+
         if(useRandomPriority)
-            priority = r.nextInt(1 << size);
+            priority = r.nextInt(pq.getRange());
         pq.add(value, priority);
 
-        return false;
+        return true;
     }
 
     @Override
