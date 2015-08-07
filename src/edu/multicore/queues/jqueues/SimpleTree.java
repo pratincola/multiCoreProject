@@ -11,6 +11,7 @@ package edu.multicore.queues.jqueues;
  */
 
 import edu.multicore.queues.utils.Bin;
+import edu.multicore.queues.utils.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,10 @@ public class SimpleTree<T> implements PQueue<T> {
         range = (1 << logRange);
         leaves = new ArrayList<TreeNode>(range);
         root = buildTree(logRange, 0);
+    }
+
+    public int getRange() {
+        return range;
     }
 
     TreeNode buildTree(int height, int slot) {
@@ -47,6 +52,7 @@ public class SimpleTree<T> implements PQueue<T> {
      * @param priority item''s priority
      */
     public void add(T item, int priority) {
+        Settings s = Settings.getInstance();
         TreeNode node = leaves.get(priority);
         node.bin.put(item);
         while(node != root) {
@@ -56,7 +62,7 @@ public class SimpleTree<T> implements PQueue<T> {
             }
             node = parent;
         }
-        System.out.println("item: " + item + " priority: " + priority);
+        if(s.isLog())System.out.println("item: " + item + " priority: " + priority);
     }
 
     public T removeMin() {
@@ -72,9 +78,16 @@ public class SimpleTree<T> implements PQueue<T> {
     }
 
     public boolean isEmpty(){
-        return root.bin.isEmpty();
+        TreeNode node = root;
+        while(!node.isLeaf()){
+            if (node.counter.get() > 0 ) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        return root.bin == null;
 
-//        return false;
     }
 
 

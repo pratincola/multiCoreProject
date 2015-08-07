@@ -11,4 +11,6 @@ interface PQueue<T> {
     T removeMin();
 
     boolean isEmpty();
+
+    int getRange();
 }
