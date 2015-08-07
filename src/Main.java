@@ -33,7 +33,7 @@ public class Main {
 
     public static void runSimpleLinear(){
         SimpleLinear s = new SimpleLinear(10);
-        WrapperSimpleTree w = new WrapperSimpleTree(s, 10, true);
+        WrapperSimpleTree w = new WrapperSimpleTree(s, true);
         Benchmark b = new Benchmark(5, 1, 10000, w);
         b.runBenchmark();
     }
@@ -41,7 +41,7 @@ public class Main {
 
     public static void runSimpleTree(){
         SimpleTree t = new SimpleTree(10);
-        WrapperSimpleTree mq = new WrapperSimpleTree(t, 6, true);
+        WrapperSimpleTree mq = new WrapperSimpleTree(t, true);
 
         Benchmark b = new Benchmark(5, 1, 1000, mq);
         b.runBenchmark();

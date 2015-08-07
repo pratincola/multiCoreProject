@@ -5,6 +5,7 @@ import edu.multicore.queues.MultiWorkStealing.WorkStealingQueue;
 import edu.multicore.queues.MyQueue;
 import edu.multicore.queues.jqueues.DualSynchQueue;
 import edu.multicore.queues.jqueues.SimpleLinear;
+import edu.multicore.queues.jqueues.SimpleTree;
 import edu.multicore.queues.jqueues.WrapperSimpleTree;
 import edu.multicore.queues.multipleProducerMultipleConsumer.CQueue;
 import edu.multicore.queues.singleProducerSingleConsumer.SingleQueue;
@@ -35,130 +36,137 @@ public class BenchRunner {
         Settings.getInstance().setLog(false);
         Benchmark benchmark;
 
-//        intFile(filename);
-//
-//        System.out.println("Multi Multi");
-//        System.out.println("OneToOne");
-//        OneToOneBenchSetupMulti();
-//        benchmark = new Benchmark(producers, consumers, queue, iterations);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "OneToOne", filename);
-//
-//
-//        System.out.println("Workstealing");
-//        WorkStealingSetupMulti();
-//        benchmark = new Benchmark(producers, consumers, queue, iterations);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "WorkStealing", filename);
-//
-//        System.out.println("Lockfree");
-//        LockFree();
-//        benchmark = new Benchmark(5, 5, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "LockFree", filename);
-//
-//        System.out.println("Lockfree RR");
-//        LockFreeMultiRR();
-//        benchmark = new Benchmark(5, 5, iterations, rr);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "LockFreeRoundRobin", filename);
-//
-//
-//        System.out.println("Locked Queue");
-//        LockedQueue();
-//        benchmark = new Benchmark(5, 5, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "LockedQueue", filename);
-//
-//        System.out.println("LockedWorkStealing");
-//        LockedWorkStealingQueue();
-//        benchmark = new Benchmark(5, 5, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "WorkStealingLocked", filename);
-//
-//        System.out.println("Single Queue 1 - 1");
-//        SingQueue();
-//        benchmark = new Benchmark(1, 1, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "SingleQueue", filename);
-//
-//
-//        System.out.println("SimpleLinear");
-//        SimpleLinear();
-//        benchmark = new Benchmark(5, 5, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "SimpleLinear", filename);
-//
-//
-//
-///////////////////////////////////////////////////////////////////////////////
-//        filename = "SingleProducerMulticonsumer.csv";
-//
-//        intFile(filename);
-//
-//        System.out.println("Single Producer");
-//
-//        System.out.println("Workstealing");
-//        WorkStealingSingleP_MultiC();
-//        benchmark = new Benchmark(producers, consumers, queue, iterations);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "WorkStealing", filename);
-//
-//        System.out.println("Lockfree");
-//        LockFree();
-//        benchmark = new Benchmark(1, 5, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "LockFree", filename);
-//
-//        System.out.println("LockfreeRR");
-//        LockFreeMultiRR();
-//        benchmark = new Benchmark(1, 5, iterations, rr);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "LockFreeRoundRobin", filename);
-//
-//        System.out.println("Locked Queue");
-//        LockedQueue();
-//        benchmark = new Benchmark(1, 5, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "LockedQueue", filename);
-//
-//        System.out.println("LockedWorkStealing");
-//        LockedWorkStealingSingleP_MultiC();
-//        benchmark = new Benchmark(1, 5, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "WorkStealingLocked", filename);
-//
-//        System.out.println("SimpleLinear");
-//        SimpleLinear();
-//        benchmark = new Benchmark(5, 5, iterations, queue);
-//        benchmark.runBenchmark();
-//
-//        writeResults(benchmark, "SimpleLinear", filename);
+        intFile(filename);
+
+        System.out.println("Multi Multi");
+        System.out.println("OneToOne");
+        OneToOneBenchSetupMulti();
+        benchmark = new Benchmark(producers, consumers, queue, iterations);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "OneToOne", filename);
 
 
-        System.out.println("Dual");
-        queue = new DualSynchQueue<>();
+        System.out.println("Workstealing");
+        WorkStealingSetupMulti();
+        benchmark = new Benchmark(producers, consumers, queue, iterations);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "WorkStealing", filename);
+
+        System.out.println("Lockfree");
+        LockFree();
         benchmark = new Benchmark(5, 5, iterations, queue);
         benchmark.runBenchmark();
 
-        writeResults(benchmark, "Dual", filename);
+        writeResults(benchmark, "LockFree", filename);
+
+        System.out.println("Lockfree RR");
+        LockFreeMultiRR();
+        benchmark = new Benchmark(5, 5, iterations, rr);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "LockFreeRoundRobin", filename);
+
+
+        System.out.println("Locked Queue");
+        LockedQueue();
+        benchmark = new Benchmark(5, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "LockedQueue", filename);
+
+        System.out.println("LockedWorkStealing");
+        LockedWorkStealingQueue();
+        benchmark = new Benchmark(5, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "WorkStealingLocked", filename);
+
+        System.out.println("Single Queue 1 - 1");
+        SingQueue();
+        benchmark = new Benchmark(1, 1, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "SingleQueue", filename);
+
+
+        System.out.println("SimpleLinear");
+        SimpleLinear();
+        benchmark = new Benchmark(5, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "SimpleLinear", filename);
+
+
+        System.out.println("SimpleTree");
+        queue = new WrapperSimpleTree<>(new SimpleTree<>(10), true);
+        benchmark = new Benchmark(5, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "SimpleTree", filename);
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+        filename = "SingleProducerMulticonsumer.csv";
+
+        intFile(filename);
+
+        System.out.println("Single Producer");
+
+        System.out.println("Workstealing");
+        WorkStealingSingleP_MultiC();
+        benchmark = new Benchmark(producers, consumers, queue, iterations);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "WorkStealing", filename);
+
+        System.out.println("Lockfree");
+        LockFree();
+        benchmark = new Benchmark(1, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "LockFree", filename);
+
+        System.out.println("LockfreeRR");
+        LockFreeMultiRR();
+        benchmark = new Benchmark(1, 5, iterations, rr);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "LockFreeRoundRobin", filename);
+
+        System.out.println("Locked Queue");
+        LockedQueue();
+        benchmark = new Benchmark(1, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "LockedQueue", filename);
+
+        System.out.println("LockedWorkStealing");
+        LockedWorkStealingSingleP_MultiC();
+        benchmark = new Benchmark(1, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "WorkStealingLocked", filename);
+
+        System.out.println("SimpleLinear");
+        SimpleLinear();
+        benchmark = new Benchmark(1, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "SimpleLinear", filename);
+
+        System.out.println("SimpleTree");
+        queue = new WrapperSimpleTree<>(new SimpleTree<>(10), true);
+        benchmark = new Benchmark(1, 5, iterations, queue);
+        benchmark.runBenchmark();
+
+        writeResults(benchmark, "SimpleTree", filename);
     }
 
     private static void SimpleLinear() {
-        queue = new WrapperSimpleTree<>(new SimpleLinear<>(10), 6, true);
+        queue = new WrapperSimpleTree<>(new SimpleLinear<>(10), true);
     }
 
     private static void CQueueInit() {

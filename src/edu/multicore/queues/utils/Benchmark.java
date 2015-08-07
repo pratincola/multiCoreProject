@@ -121,7 +121,6 @@ public class Benchmark {
 
             for(i = 0; i < numConsumers; i++){
                 consumers[i].stop();
-                cthreads[i].stop(null);
                 totalEmpty += consumers[i].getNumEmpty();
             }
 
