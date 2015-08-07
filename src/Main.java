@@ -1,5 +1,9 @@
 import edu.multicore.queues.MyQueue;
+import edu.multicore.queues.Performance.BenchRunner;
 import edu.multicore.queues.jqueues.DualSynchQueue;
+import edu.multicore.queues.jqueues.SimpleLinear;
+import edu.multicore.queues.jqueues.SimpleTree;
+import edu.multicore.queues.jqueues.WrapperSimpleTree;
 import edu.multicore.queues.singleProducerSingleConsumer.SingleQueue;
 import edu.multicore.queues.unbounded.UnboundedQueue;
 import edu.multicore.queues.utils.*;
@@ -10,12 +14,43 @@ import hw4.q2.WrappedCoarseGrainedListSet;
 public class Main {
 
     public static void main(String[] args) {
-        Settings s = Settings.getInstance();
-        s.setLog(true);
+
+        BenchRunner b = new BenchRunner();
+        try {
+            b.main(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//
+//        Settings s = Settings.getInstance();
+//        s.setLog(true);
 //        runWrappedCoarseGrainedListSet();
-        runLockedFreeRR();
+//        runLockedFreeRR();
+//        runSimpleTree();
+//        runLockedFree();
+          runSimpleLinear();
+    }
+
+    public static void runSimpleLinear(){
+        SimpleLinear s = new SimpleLinear(10);
+        WrapperSimpleTree w = new WrapperSimpleTree(s, 10, true);
+        Benchmark b = new Benchmark(5, 1, 10000, w);
+        b.runBenchmark();
+    }
 
 
+    public static void runSimpleTree(){
+        SimpleTree t = new SimpleTree(10);
+        WrapperSimpleTree mq = new WrapperSimpleTree(t, 6, true);
+
+        Benchmark b = new Benchmark(5, 1, 1000, mq);
+        b.runBenchmark();
+    }
+
+    public static void runLockedFree(){
+        LockFreeQueue mq = new LockFreeQueue();
+        Benchmark b = new Benchmark(5, 1, 1000, mq);
+        b.runBenchmark();
     }
 
     public static void runLockedFreeRR(){
