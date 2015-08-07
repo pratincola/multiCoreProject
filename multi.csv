@@ -1,8 +1,9 @@
 Queue,Time,Full,Empty
-OneToOne,152,471,25608355
-WorkStealing,114,261430,868003
-LockFree,235,0,657324
-LockFreeRoundRobin,379,0,0
-LockedQueue,749,0,680768
-WorkStealingLocked,172,2746824,893220
-SingleQueue,112,521071,944196
+OneToOne,128,0,27793627
+WorkStealing,112,19202,1106218
+LockFree,259,99724,804472
+LockFreeRoundRobin,157,0,0
+LockedQueue,398,0,785961
+WorkStealingLocked,769,3097722,892976
+SingleQueue,113,23365,1826732
+SimpleLinear,1955,0,151

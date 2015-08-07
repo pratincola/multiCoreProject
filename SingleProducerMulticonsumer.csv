@@ -1,6 +1,7 @@
 Queue,Time,Full,Empty
-WorkStealing,295,0,3901532
-LockFree,258,0,3384181
-LockFreeRoundRobin,906,0,744315
-LockedQueue,1425,0,13650
-WorkStealingLocked,1573,5537683,309797
+WorkStealing,279,102238,2019977
+LockFree,274,104358,3640773
+LockFreeRoundRobin,714,0,613171
+LockedQueue,384,0,7711
+WorkStealingLocked,937,3829912,346006
+SimpleLinear,2417,0,128

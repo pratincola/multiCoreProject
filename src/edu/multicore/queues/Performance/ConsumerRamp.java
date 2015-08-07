@@ -23,7 +23,7 @@ public class ConsumerRamp {
     private static boolean writeToFile = true;
 
     public static void main(String args[]) throws Exception {
-        int maxConsumers = 10;
+        int maxConsumers = 50;
         int results[] = new int[maxConsumers];
 
         String filename = "consumerRamp.csv";
@@ -60,17 +60,17 @@ public class ConsumerRamp {
         }
         writeln(filename);
 
-        writeQueue("LockFreeRR", filename);
-        for(int i = 1; i <= maxConsumers; i++){
-            System.out.println("LockFreeRR");
-
-            LockFreeMultiRR(i);
-            benchmark = new Benchmark(3, i, iterations, rr);
-            benchmark.runBenchmark();
-
-            writeResults(benchmark, "LockFreeRR", filename);
-        }
-        writeln(filename);
+//        writeQueue("LockFreeRR", filename);
+//        for(int i = 1; i <= maxConsumers; i++){
+//            System.out.println("LockFreeRR");
+//
+//            LockFreeMultiRR(i);
+//            benchmark = new Benchmark(3, i, iterations, rr);
+//            benchmark.runBenchmark();
+//
+//            writeResults(benchmark, "LockFreeRR", filename);
+//        }
+//        writeln(filename);
 
         writeQueue("LockFree", filename);
         for(int i = 1; i <= maxConsumers; i++){
@@ -170,7 +170,7 @@ public class ConsumerRamp {
     }
 
     private static void LockFreeMultiRR(int num){
-        queue = new LockFreeQueue(100);
+        queue = new LockFreeQueue();
         rr = new RoundRobin(num, queue.getClass());
     }
 
